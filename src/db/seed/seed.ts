@@ -51,6 +51,9 @@ const productsSeed = [
 
 const variantConfig = [
   { storage: "256GB", color: "Silver", priceDiff: 0 },
+  { storage: "256GB", color: "Black", priceDiff: 0 },
+
+  { storage: "512GB", color: "Silver", priceDiff: 20000 },
   { storage: "512GB", color: "Black", priceDiff: 20000 },
 ]
 
