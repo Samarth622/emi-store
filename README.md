@@ -1,36 +1,154 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📱 EMI Store — Full Stack Assignment
 
-## Getting Started
+A full-stack web application that displays smartphones with multiple EMI plans backed by mutual-fund style financing. Users can explore products, select variants, compare EMI options, and proceed with a selected plan.
 
-First, run the development server:
+This project was built as part of the **1Fi Full Stack Developer Assignment**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## ✨ Features
+
+### 🛍 Product Experience
+* **Dynamic product pages:** Multiple products with unique URLs.
+* **Variant selection:** Choose between different storage capacities and colors.
+* **Variant-specific images:** Visuals update based on selected variants.
+* **Price & MRP display:** Transparent pricing with automatic discount calculation.
+
+### 💳 EMI Experience
+* **Multiple EMI plans:** Various tenure options available per variant.
+* **Detailed breakdowns:** Monthly payment calculation, interest rate display, and cashback information.
+* **Interactive selection:** Selectable EMI plans with a "Proceed" button that enables only after a selection is made.
+
+### ⚙ Backend
+* **Database-driven:** Fully dynamic data (no hardcoded arrays).
+* **REST APIs:** Custom endpoints for fetching products and variants.
+* **Relational schema:** Structured data flow (Product → Variant → EMI Plan).
+
+---
+
+## 🧠 Architecture
+
+
+
+The application follows a modern full-stack architecture using Next.js App Router:
+
+**Frontend (Next.js)** ⇄ **API Routes (Next.js)** ⇄ **Drizzle ORM** ⇄ **Neon PostgreSQL**
+
+### Data Model
+* **Product** (Parent entity)
+    * ↳ **Variants** (Child of Product)
+        * ↳ **EMI Plans** (Child of Variant)
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+* **Framework:** Next.js (App Router)
+* **Library:** React
+* **Styling:** Tailwind CSS
+
+### Backend & Database
+* **API:** Next.js Route Handlers (Node.js)
+* **Database:** Neon PostgreSQL
+* **ORM:** Drizzle ORM
+
+---
+
+## 📦 Database Schema
+
+
+
+### `Product`
+* `id` (Primary Key)
+* `name`
+* `slug`
+* `description`
+
+### `Variant`
+* `id` (Primary Key)
+* `productId` (Foreign Key)
+* `storage`
+* `color`
+* `price`
+* `mrp`
+* `image`
+
+### `EMI Plan`
+* `id` (Primary Key)
+* `variantId` (Foreign Key)
+* `tenureMonths`
+* `monthlyAmount`
+* `interestRate`
+* `cashback`
+
+---
+
+## 🔌 API Endpoints
+
+### Get Products List
+Retrieves all available products.
+```http
+GET /api/products
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Get Product Details
+Retrieves a specific product by its slug, including all associated variants and EMI plans.
+```http
+GET /api/products/[slug]
+```
+Returns:
+* product object
+* Array of variants
+* Array of EMI plans mapped to variants
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+--- 
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# ⚡ Setup Instructions
 
-## Learn More
+### 1. Clone the repository
+```bash
+git clone <repo-url>
+cd emi-store
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Install dependencies
+```bash
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Set up environment variables
+Create a `.env` file in the root directory and add the following variables:
+```env
+DATABASE_URL=postgresql://<username>:<password>@<host>:<port>/<database>
+NODE_ENV=development
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Run migrations
+Push the schema to your Neon PostgreSQL database:
 
-## Deploy on Vercel
+```bash
+npx drizzle-kit generate
+npx drizzle-kit migrate
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5. Seed the database
+Populate the database with initial dummy data:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run seed
+```
+
+### 6. Run the development server
+```bash
+npm run dev
+```
+
+### 7. Access the application
+Open your browser and navigate to `http://localhost:3000` to see the application in action.
+
+---
+
+# 📝 Author
+
+Samarth Gupta
